@@ -123,9 +123,6 @@ app.get('/', (req, res) => {
             .status-200 { background-color: #16a34a; }
             .status-201 { background-color: #15803d; }
             .status-400 { background-color: #dc2626; }
-            .status-404 { background-color: #eab308; color: #000; }
-            .algo-box { background: #f8fafc; border-left: 4px solid var(--accent); padding: 12px 15px; margin-bottom: 10px; border-radius: 0 6px 6px 0; font-size: 0.88rem; }
-            .algo-box strong { color: var(--primary); }
         </style>
     </head>
     <body>
@@ -243,35 +240,7 @@ app.get('/', (req, res) => {
                 </div>
             </div>
 
-            <!-- 4. STEP-BY-STEP CRUD ALGORITHMS FOR VIVA -->
-            <div class="card">
-                <h2><span>📖 Step-by-Step CRUD Algorithms (To Explain in Viva / Demo)</span></h2>
-                
-                <div class="algo-box">
-                    <strong>1. CREATE (POST /api/v1/students):</strong>
-                    Client sends JSON &rarr; <code>express-validator</code> checks PRN (7-16 digits), email, phone, CGPA &rarr; Query MongoDB for duplicate PRN/Email &rarr; If conflict, return <strong>400 Bad Request</strong> &rarr; Else save via <code>Student.create()</code> &rarr; Return <strong>201 Created</strong> with <code>Location</code> header.
-                </div>
 
-                <div class="algo-box">
-                    <strong>2. READ ALL (GET /api/v1/students):</strong>
-                    Extract query filters (<code>?department=</code>, <code>?search=</code>, <code>?page=</code>) &rarr; Calculate pagination offset (<code>skip</code>) &rarr; Execute <code>Student.find(filter)</code> &rarr; Return <strong>200 OK</strong> with total count, pagination metadata, and array.
-                </div>
-
-                <div class="algo-box">
-                    <strong>3. READ BY ID / PRN (GET /api/v1/students/:id):</strong>
-                    Check identifier syntax (24-hex ObjectId or numeric PRN) &rarr; Query via <code>findById()</code> or <code>findOne({ prn })</code> &rarr; If null, return <strong>404 Not Found</strong> &rarr; Else return <strong>200 OK</strong> with student document.
-                </div>
-
-                <div class="algo-box">
-                    <strong>4. UPDATE (PUT /api/v1/students/:id):</strong>
-                    Validate incoming fields &rarr; Find existing record &rarr; If not found, return <strong>404 Not Found</strong> &rarr; Ensure updated PRN/email does not conflict with another student &rarr; Execute <code>findByIdAndUpdate()</code> with <code>{ new: true, runValidators: true }</code> &rarr; Return <strong>200 OK</strong>.
-                </div>
-
-                <div class="algo-box">
-                    <strong>5. DELETE (DELETE /api/v1/students/:id):</strong>
-                    Verify ID &rarr; Check student existence &rarr; If not found, return <strong>404 Not Found</strong> &rarr; Execute <code>findByIdAndDelete()</code> &rarr; Return <strong>200 OK</strong> with confirmation message.
-                </div>
-            </div>
         </div>
 
         <script>
