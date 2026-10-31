@@ -103,9 +103,9 @@
     
     \begin{minipage}{0.85\textwidth}
         \begin{tabular}{ll}
-            \textbf{Student Name:} & Ayush \\
-            \textbf{PRN / Roll No.:} & 2304362 \\
-            \textbf{Class / Batch:} & T.Y. B.Tech Computer Engineering (Batch B) \\
+            \textbf{Student Name:} & Ayush Jugseniye \\
+            \textbf{PRN / Roll No.:} & 202401040128 \\
+            \textbf{Class / Batch:} & T.Y. B.Tech Computer Engineering (Batch WT1) \\
             \textbf{Course Outcome:} & CO4: Develop and deploy RESTful Web Services \\
             \textbf{Lab Hours:} & 8 Hours \\
             \textbf{Max Marks:} & 10 Marks \\
@@ -253,13 +253,13 @@ const createStudent = async (req, res, next) => {
 % -----------------------------------------------------------------------------
 \section{Postman Testing and Output Verification}
 
-The exported Postman collection (\texttt{2304362\_Ayush\_P6\_Postman\_Collection.json}) comprises 12 distinct test cases testing all positive and negative execution paths:
+The exported Postman collection (\texttt{202401040128\_Ayush\_P6\_Postman\_Collection.json}) comprises 12 distinct test cases testing all positive and negative execution paths:
 
 \begin{enumerate}
     \item \textbf{System Health Check (\texttt{GET /health})}: Verifies that the Express process is active and MongoDB connection state is \texttt{Connected} (HTTP 200).
     \item \textbf{Get All Students (\texttt{GET /api/v1/students})}: Retrieves paginated documents array with total count and query pagination metadata (HTTP 200).
     \item \textbf{Create Student (\texttt{POST /api/v1/students})}: Validates JSON payload, persists document, emits HTTP 201, sets \texttt{Location} response header, and populates \texttt{\{\{createdStudentId\}\}} variable.
-    \item \textbf{Get Student by Identifier (\texttt{GET /api/v1/students/:id})}: Tests dual-identifier lookup using both PRN (\texttt{2304362}) and MongoDB ObjectId (HTTP 200).
+    \item \textbf{Get Student by Identifier (\texttt{GET /api/v1/students/:id})}: Tests dual-identifier lookup using both PRN (\texttt{202401040128}) and MongoDB ObjectId (HTTP 200).
     \item \textbf{Update Student (\texttt{PUT /api/v1/students/:id})}: Updates CGPA to 9.65 and adds technical skills with schema validation (HTTP 200).
     \item \textbf{Delete Student (\texttt{DELETE /api/v1/students/:id})}: Eliminates student record from MongoDB and returns status 200 confirmation.
     \item \textbf{Duplicate PRN Rejection}: Submitting an existing PRN triggers HTTP 400 Bad Request with informative duplicate key message.

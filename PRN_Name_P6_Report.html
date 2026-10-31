@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report - RESTful CRUD API</title>
+    <title>202401040128_Ayush_Jugseniye_P6_Report - RESTful CRUD API</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -262,13 +262,13 @@
         <table class="meta-table">
             <tr>
                 <td class="meta-label">Student Name</td>
-                <td><strong>Ayush</strong></td>
+                <td><strong>Ayush Jugseniye</strong></td>
                 <td class="meta-label">PRN / Roll No.</td>
-                <td><strong>2304362</strong></td>
+                <td><strong>202401040128</strong></td>
             </tr>
             <tr>
                 <td class="meta-label">Class &amp; Division</td>
-                <td>T.Y. B.Tech Computer Engineering (Batch B)</td>
+                <td>T.Y. B.Tech Computer Engineering (Batch WT1)</td>
                 <td class="meta-label">Academic Year</td>
                 <td>2025&ndash;26</td>
             </tr>
@@ -514,7 +514,7 @@ const getStudentStats = async (req, res, next) => {
     <div class="page-break"></div>
     <h2 class="section-title">6. Postman Test Execution and Output Verification</h2>
     <p>
-        The complete test collection (<code>2304362_Ayush_P6_Postman_Collection.json</code>) was executed against the API server. All test assertions succeeded, verifying both positive CRUD flows and negative edge cases.
+        The complete test collection (<code>202401040128_Ayush_P6_Postman_Collection.json</code>) was executed against the API server. All test assertions succeeded, verifying both positive CRUD flows and negative edge cases.
     </p>
 
     <!-- TEST CASE 1 -->
@@ -553,7 +553,7 @@ const getStudentStats = async (req, res, next) => {
   "total": 5,
   "pagination": { "page": 1, "limit": 10, "totalPages": 1, "hasNextPage": false, "hasPrevPage": false },
   "data": [
-    { "id": "6ae59435...", "prn": "2304362", "name": "Ayush", "department": "Computer Engineering", "cgpa": 9.42 },
+    { "id": "6ae59435...", "prn": "202401040128", "name": "Ayush Jugseniye", "department": "Computer Engineering", "cgpa": 9.42 },
     { "id": "6ae59436...", "prn": "2304101", "name": "Rohan Sharma", "department": "Computer Engineering", "cgpa": 8.95 }
   ]
 }</code></pre>
@@ -623,7 +623,7 @@ const getStudentStats = async (req, res, next) => {
             <strong>Test 6: Negative Test - Duplicate PRN (POST /api/v1/students)</strong>
             <span class="badge" style="background:#b91c1c;">HTTP 400 Bad Request</span>
         </div>
-        <p><strong>Purpose:</strong> Rejects insertion when submitting a duplicate PRN (<code>2304362</code>).</p>
+        <p><strong>Purpose:</strong> Rejects insertion when submitting a duplicate PRN (<code>202401040128</code>).</p>
         <pre><code>{
   "success": false,
   "statusCode": 400,
@@ -646,7 +646,7 @@ const getStudentStats = async (req, res, next) => {
   "message": "Request Validation Failed",
   "errorCount": 4,
   "errors": [
-    { "field": "prn", "message": "PRN must be 7 to 8 numeric digits" },
+    { "field": "prn", "message": "PRN must be 7 to 16 numeric digits" },
     { "field": "email", "message": "Must be a valid email address format" },
     { "field": "department", "message": "Department must be one of: Computer Engineering..." },
     { "field": "cgpa", "message": "CGPA must be a decimal between 0.00 and 10.00" }

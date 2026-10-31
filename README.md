@@ -3,12 +3,12 @@
 **MIT Academy of Engineering, Pune**  
 **School of Computer Engineering**  
 - **Course**: Web Technology (`2304362L`)
-- **Class**: T.Y. B.Tech Computer Engineering (Batch B)
+- **Class**: T.Y. B.Tech Computer Engineering (Batch WT1)
 - **Academic Year**: 2025–26
 - **Practical No.**: 6 – RESTful API
 - **Course Outcome**: CO4
-- **Student Name**: Ayush
-- **PRN**: `2304362`
+- **Student Name**: Ayush Jugseniye
+- **PRN**: `202401040128`
 - **Max Marks**: 10
 
 ---
@@ -92,9 +92,9 @@ Open your browser and navigate to:
 2. Click **Import** (top left).
 3. Select the file:
    ```
-   postman/2304362_Ayush_P6_Postman_Collection.json
+   postman/202401040128_Ayush_P6_Postman_Collection.json
    ```
-4. Confirm import of collection **`2304362_Ayush_P6_StudentAPI_Collection`**.
+4. Confirm import of collection **`202401040128_Ayush_P6_StudentAPI_Collection`**.
 5. The collection is pre-configured with:
    - Variable `{{baseUrl}}` pointing to `http://localhost:5050`.
    - Dynamic chaining: Test `03. Create Student` automatically captures the generated student ID and stores it in `{{createdStudentId}}` for the subsequent `GET`, `PUT`, and `DELETE` requests!
@@ -112,8 +112,8 @@ Open your browser and navigate to:
    ```powershell
    python create_submission_zip.py
    ```
-   Generates `2304362_Ayush_P6_StudentAPI.zip` (strictly excluding `node_modules` and `.env`).
+   Generates `202401040128_Ayush_P6_StudentAPI.zip` (strictly excluding `node_modules` and `.env`).
 2. **Postman Collection**:
-   Upload `2304362_Ayush_P6_Postman_Collection.json` (also in `postman/`).
+   Upload `202401040128_Ayush_P6_Postman_Collection.json` (also in `postman/`).
 3. **PDF Report**:
-   Open `PRN_Name_P6_Report.html` in Chrome/Edge, press <kbd>Ctrl</kbd> + <kbd>P</kbd>, and save as `2304362_Ayush_P6_Report.pdf`.
+   Open `PRN_Name_P6_Report.html` in Chrome/Edge, press <kbd>Ctrl</kbd> + <kbd>P</kbd>, and save as `202401040128_Ayush_P6_Report.pdf`.

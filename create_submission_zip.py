@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
 Moodle Submission Packaging Script for Practical No. 6
-Student: Ayush (PRN: 2304362)
-Generates: 2304362_Ayush_P6_StudentAPI.zip (strictly excluding node_modules and .env)
+Student: Ayush Jugseniye (PRN: 202401040128) | Batch: WT1
+Generates: 202401040128_Ayush_P6_StudentAPI.zip (strictly excluding node_modules and .env)
 """
 
 import os
 import zipfile
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-ZIP_FILENAME = "2304362_Ayush_P6_StudentAPI.zip"
+ZIP_FILENAME = "202401040128_Ayush_P6_StudentAPI.zip"
 ZIP_PATH = os.path.join(PROJECT_DIR, ZIP_FILENAME)
 
 EXCLUDE_DIRS = {

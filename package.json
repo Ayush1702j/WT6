@@ -18,7 +18,7 @@
     "postman",
     "mit-aoe"
   ],
-  "author": "Ayush (PRN: 2304362)",
+  "author": "Ayush Jugseniye (PRN: 202401040128) - Batch: WT1",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

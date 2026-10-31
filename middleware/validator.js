@@ -32,7 +32,7 @@ const validateStudentCreate = [
     body('prn')
         .trim()
         .notEmpty().withMessage('PRN is required')
-        .matches(/^\d{7,8}$/).withMessage('PRN must be 7 to 8 numeric digits (e.g., 2304362)'),
+        .matches(/^\d{7,16}$/).withMessage('PRN must be 7 to 16 numeric digits (e.g., 202401040128)'),
 
     body('name')
         .trim()
@@ -43,7 +43,7 @@ const validateStudentCreate = [
     body('email')
         .trim()
         .notEmpty().withMessage('Email address is required')
-        .isEmail().withMessage('Must be a valid email address format (e.g., ayush.mit@mitaoe.ac.in)')
+        .isEmail().withMessage('Must be a valid email address format (e.g., ayush.jugseniye@mitaoe.ac.in)')
         .normalizeEmail(),
 
     body('phone')
@@ -65,7 +65,7 @@ const validateStudentCreate = [
         .optional()
         .trim()
         .toUpperCase()
-        .isIn(['A', 'B', 'C', 'D']).withMessage('Division must be A, B, C, or D'),
+        .isIn(['A', 'B', 'C', 'D', 'WT1', 'WT2', 'WT3', 'BATCH B']).withMessage('Division/Batch must be A, B, C, D, or WT1'),
 
     body('cgpa')
         .notEmpty().withMessage('CGPA is required')
@@ -88,9 +88,9 @@ const validateStudentUpdate = [
     param('id')
         .custom((val) => {
             const isValidObjectId = mongoose.Types.ObjectId.isValid(val);
-            const isValidPRN = /^\d{7,8}$/.test(val);
+            const isValidPRN = /^\d{7,16}$/.test(val);
             if (!isValidObjectId && !isValidPRN) {
-                throw new Error('Identifier must be a valid 24-character MongoDB ObjectId or a 7-8 digit PRN');
+                throw new Error('Identifier must be a valid 24-character MongoDB ObjectId or a 7-16 digit PRN');
             }
             return true;
         }),
@@ -98,7 +98,7 @@ const validateStudentUpdate = [
     body('prn')
         .optional()
         .trim()
-        .matches(/^\d{7,8}$/).withMessage('PRN must be 7 to 8 numeric digits'),
+        .matches(/^\d{7,16}$/).withMessage('PRN must be 7 to 16 numeric digits'),
 
     body('name')
         .optional()
@@ -131,7 +131,7 @@ const validateStudentUpdate = [
         .optional()
         .trim()
         .toUpperCase()
-        .isIn(['A', 'B', 'C', 'D']).withMessage('Division must be A, B, C, or D'),
+        .isIn(['A', 'B', 'C', 'D', 'WT1', 'WT2', 'WT3', 'BATCH B']).withMessage('Division/Batch must be A, B, C, D, or WT1'),
 
     body('cgpa')
         .optional()
@@ -154,9 +154,9 @@ const validateIdentifier = [
     param('id')
         .custom((val) => {
             const isValidObjectId = mongoose.Types.ObjectId.isValid(val);
-            const isValidPRN = /^\d{7,8}$/.test(val);
+            const isValidPRN = /^\d{7,16}$/.test(val);
             if (!isValidObjectId && !isValidPRN) {
-                throw new Error('Invalid student identifier. Must be a 24-character MongoDB ObjectId (e.g., 6723b...) or a 7-8 digit PRN');
+                throw new Error('Invalid student identifier. Must be a 24-character MongoDB ObjectId (e.g., 6723b...) or a 7-16 digit PRN');
             }
             return true;
         }),

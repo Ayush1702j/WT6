@@ -1,7 +1,7 @@
 /**
  * Seed Script to Populate Initial Student Records into MongoDB
  * Run via: npm run seed
- * Student: Ayush (PRN: 2304362)
+ * Student: Ayush Jugseniye (PRN: 202401040128) | Batch: WT1
  */
 
 require('dotenv').config();
@@ -10,13 +10,13 @@ const { Student } = require('../models/Student');
 
 const sampleStudents = [
     {
-        prn: '2304362',
-        name: 'Ayush',
-        email: 'ayush.mit@mitaoe.ac.in',
+        prn: '202401040128',
+        name: 'Ayush Jugseniye',
+        email: 'ayush.jugseniye@mitaoe.ac.in',
         phone: '9876543210',
         department: 'Computer Engineering',
         year: 'T.Y. B.Tech',
-        division: 'B',
+        division: 'WT1',
         cgpa: 9.42,
         skills: ['Node.js', 'Express', 'MongoDB', 'REST APIs', 'Postman'],
         status: 'Active'

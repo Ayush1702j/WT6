@@ -29,7 +29,7 @@ const studentSchema = new mongoose.Schema(
             required: [true, 'PRN is required'],
             unique: true,
             trim: true,
-            match: [/^\d{7,8}$/, 'PRN must be 7 to 8 numeric digits']
+            match: [/^\d{7,16}$/, 'PRN must be 7 to 16 numeric digits (e.g., 202401040128)']
         },
         name: {
             type: String,
@@ -74,9 +74,9 @@ const studentSchema = new mongoose.Schema(
         },
         division: {
             type: String,
-            default: 'B',
+            default: 'WT1',
             uppercase: true,
-            enum: ['A', 'B', 'C', 'D']
+            enum: ['A', 'B', 'C', 'D', 'WT1', 'WT2', 'WT3', 'BATCH B']
         },
         cgpa: {
             type: Number,

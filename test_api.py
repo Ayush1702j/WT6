@@ -30,7 +30,7 @@ def main():
     print(f"   -> Retrieved {res.get('count')} students out of total {res.get('total')}")
 
     # 3. Get student by PRN
-    test(f"{BASE_URL}/api/v1/students/2304362")
+    test(f"{BASE_URL}/api/v1/students/202401040128")
 
     # 4. Get stats
     status, stats = test(f"{BASE_URL}/api/v1/students/analytics/stats")

@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "b78b5e20-3341-48e7-91a5-8c763b019362",
-		"name": "2304362_Ayush_P6_StudentAPI_Collection",
-		"description": "Comprehensive Postman Test Collection for Practical No. 6: RESTful CRUD API for Student Records.\n\n- Institution: MIT Academy of Engineering, Pune\n- Course: Web Technology (2304362L) | T.Y. B.Tech (Batch B)\n- Student: Ayush | PRN: 2304362\n- Covers: Full CRUD, Valid/Invalid status codes (200, 201, 400, 404, 500), Pre-request & Test assertions.",
+		"name": "202401040128_Ayush_P6_StudentAPI_Collection",
+		"description": "Comprehensive Postman Test Collection for Practical No. 6: RESTful CRUD API for Student Records.\n\n- Institution: MIT Academy of Engineering, Pune\n- Course: Web Technology (2304362L) | T.Y. B.Tech (Batch WT1)\n- Student: Ayush Jugseniye | PRN: 202401040128\n- Covers: Full CRUD, Valid/Invalid status codes (200, 201, 400, 404, 500), Pre-request & Test assertions.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -138,11 +138,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/v1/students/2304362",
+					"raw": "{{baseUrl}}/api/v1/students/202401040128",
 					"host": ["{{baseUrl}}"],
-					"path": ["api", "v1", "students", "2304362"]
+					"path": ["api", "v1", "students", "202401040128"]
 				},
-				"description": "Demonstrates identifier flexibility: looks up student record using their unique 7-digit PRN."
+				"description": "Demonstrates identifier flexibility: looks up student record using their unique PRN."
 			},
 			"response": [],
 			"event": [
@@ -153,11 +153,11 @@
 							"pm.test(\"Status code is 200 OK\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							"pm.test(\"Student is Ayush (PRN: 2304362)\", function () {",
+							"pm.test(\"Student is Ayush Jugseniye (PRN: 202401040128)\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.success).to.eql(true);",
-							"    pm.expect(jsonData.data.prn).to.eql(\"2304362\");",
-							"    pm.expect(jsonData.data.name).to.eql(\"Ayush\");",
+							"    pm.expect(jsonData.data.prn).to.eql(\"202401040128\");",
+							"    pm.expect(jsonData.data.name).to.eql(\"Ayush Jugseniye\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -317,14 +317,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"prn\": \"2304362\",\n  \"name\": \"Ayush Clone\",\n  \"email\": \"ayush.clone@mitaoe.ac.in\",\n  \"phone\": \"9876543219\",\n  \"department\": \"Computer Engineering\",\n  \"year\": \"T.Y. B.Tech\",\n  \"cgpa\": 8.5\n}"
+					"raw": "{\n  \"prn\": \"202401040128\",\n  \"name\": \"Ayush Clone\",\n  \"email\": \"ayush.clone@mitaoe.ac.in\",\n  \"phone\": \"9876543219\",\n  \"department\": \"Computer Engineering\",\n  \"year\": \"T.Y. B.Tech\",\n  \"cgpa\": 8.5\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/api/v1/students",
 					"host": ["{{baseUrl}}"],
 					"path": ["api", "v1", "students"]
 				},
-				"description": "Attempts to insert a student with an already registered PRN (2304362). Expects HTTP 400 Bad Request."
+				"description": "Attempts to insert a student with an already registered PRN (202401040128). Expects HTTP 400 Bad Request."
 			},
 			"response": [],
 			"event": [

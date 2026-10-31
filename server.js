@@ -1,7 +1,7 @@
 /**
  * Main Application Entry Point - Express RESTful API
  * Subject: Web Technology (2304362L) - Practical No. 6
- * Student: Ayush (PRN: 2304362) | MIT Academy of Engineering, Pune
+ * Student: Ayush Jugseniye (PRN: 202401040128) | Batch: WT1 | MIT Academy of Engineering, Pune
  */
 
 require('dotenv').config();
@@ -115,9 +115,9 @@ app.get('/', (req, res) => {
                 <h1>MIT Academy of Engineering &mdash; Student Records RESTful API</h1>
                 <p>Web Technology (2304362L) &bull; Practical No. 6: RESTful CRUD API Deployed &amp; Tested with Postman</p>
                 <div class="meta-bar">
-                    <span class="meta-pill">&bull; Student: <strong>Ayush</strong></span>
-                    <span class="meta-pill">&bull; PRN: <strong>2304362</strong></span>
-                    <span class="meta-pill">&bull; Class: <strong>T.Y. B.Tech (Batch B)</strong></span>
+                    <span class="meta-pill">&bull; Student: <strong>Ayush Jugseniye</strong></span>
+                    <span class="meta-pill">&bull; PRN: <strong>202401040128</strong></span>
+                    <span class="meta-pill">&bull; Class: <strong>T.Y. B.Tech (Batch WT1)</strong></span>
                     <span class="meta-pill">&bull; Status: <strong style="color: #4ade80;">Online</strong></span>
                 </div>
             </div>
@@ -147,9 +147,9 @@ app.get('/', (req, res) => {
                     <div>
                         <span class="badge badge-get">GET</span>
                         <span class="route-url">/api/v1/students/:id</span>
-                        <div class="route-desc">Fetch single student by MongoDB ObjectId or 7-8 digit PRN</div>
+                        <div class="route-desc">Fetch single student by MongoDB ObjectId or 7-16 digit PRN</div>
                     </div>
-                    <a href="/api/v1/students/2304362" target="_blank" class="btn btn-outline">Test PRN Lookup</a>
+                    <a href="/api/v1/students/202401040128" target="_blank" class="btn btn-outline">Test PRN Lookup</a>
                 </div>
 
                 <div class="route-item">
@@ -221,7 +221,7 @@ app.use(errorHandler);
 const server = app.listen(PORT, () => {
     console.log(`============================================================`);
     console.log(`  MIT AOE - Student Records RESTful CRUD API Live`);
-    console.log(`  Student: Ayush | PRN: 2304362 | Batch B`);
+    console.log(`  Student: Ayush Jugseniye | PRN: 202401040128 | Batch: WT1`);
     console.log(`  Server running at: http://localhost:${PORT}`);
     console.log(`  API Base: http://localhost:${PORT}/api/v1/students`);
     console.log(`  Health:   http://localhost:${PORT}/health`);
