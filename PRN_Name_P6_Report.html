@@ -311,15 +311,13 @@
         </ul>
     </div>
 
-    <h3 class="sub-title">Application Request-Response Flow</h3>
+    <h3 class="sub-title">Step-by-Step Algorithms for CRUD Operations</h3>
     <ol>
-        <li>Incoming HTTP request is intercepted by <code>helmet</code> security headers and <code>cors</code> middleware.</li>
-        <li>Built-in body parsers (<code>express.json()</code>) deserialize incoming JSON payloads into <code>req.body</code>.</li>
-        <li>Custom <code>requestLogger</code> middleware starts a microsecond high-resolution timer via <code>process.hrtime()</code>.</li>
-        <li>The request is routed to <code>routes/studentRoutes.js</code>, which runs declarative validation chains from <code>middleware/validator.js</code>.</li>
-        <li>Upon validation success, <code>controllers/studentController.js</code> executes queries via Mongoose models against MongoDB.</li>
-        <li>A semantic status code (e.g., 201 for creation with a <code>Location</code> header) and JSON response are dispatched.</li>
-        <li>Any caught runtime errors are intercepted by the centralized 4-argument error handler in <code>middleware/errorHandler.js</code>.</li>
+        <li><strong>Create Algorithm (POST):</strong> Receive JSON payload &rarr; Validate PRN (7-16 digits), email, phone, CGPA using <code>express-validator</code> &rarr; Check for duplicate PRN/Email in MongoDB &rarr; If conflict, return HTTP 400 Bad Request &rarr; Else save via <code>Student.create()</code> &rarr; Return HTTP 201 Created with <code>Location</code> header.</li>
+        <li><strong>Read All Algorithm (GET):</strong> Extract query filters (<code>?department=</code>, <code>?search=</code>, <code>?page=</code>) &rarr; Calculate pagination offset (<code>skip = (page - 1) * limit</code>) &rarr; Execute <code>Student.find(filter)</code> &rarr; Return HTTP 200 OK with total count, pagination metadata, and documents array.</li>
+        <li><strong>Read by ID / PRN Algorithm (GET):</strong> Validate identifier syntax (24-hex ObjectId or numeric PRN) &rarr; Query MongoDB via <code>findById()</code> or <code>findOne({ prn })</code> &rarr; If not found, return HTTP 404 Not Found &rarr; Else return HTTP 200 OK with student profile.</li>
+        <li><strong>Update Algorithm (PUT):</strong> Validate incoming fields &rarr; Locate student by ID or PRN &rarr; If missing, return HTTP 404 &rarr; Verify updated PRN/Email does not conflict with another document &rarr; Persist updates via <code>findByIdAndUpdate()</code> &rarr; Return HTTP 200 OK.</li>
+        <li><strong>Delete Algorithm (DELETE):</strong> Validate identifier &rarr; Verify document existence &rarr; If not found, return HTTP 404 &rarr; Remove from database via <code>findByIdAndDelete()</code> &rarr; Return HTTP 200 OK confirmation.</li>
     </ol>
 
     <!-- 4. RESTFUL ENDPOINTS SPECIFICATION TABLE -->
@@ -352,7 +350,7 @@
             <tr>
                 <td><span class="badge badge-get">GET</span></td>
                 <td><code>/api/v1/students/:id</code></td>
-                <td>Fetch single student by 24-hex ObjectId or 7-8 digit PRN</td>
+                <td>Fetch single student by 24-hex ObjectId or 7-16 digit PRN</td>
                 <td>200, 400, 404</td>
                 <td>URL Param: <code>:id</code></td>
             </tr>
