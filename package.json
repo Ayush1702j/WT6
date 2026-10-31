@@ -1,0 +1,35 @@
+{
+  "name": "wt-assignment-6-rest-api",
+  "version": "1.0.0",
+  "description": "Practical No. 6: RESTful CRUD API for Student Records using Express, MongoDB, and Mongoose",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node data/seed.js",
+    "zip": "python create_submission_zip.py"
+  },
+  "keywords": [
+    "express",
+    "rest-api",
+    "crud",
+    "mongodb",
+    "mongoose",
+    "postman",
+    "mit-aoe"
+  ],
+  "author": "Ayush (PRN: 2304362)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.10.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

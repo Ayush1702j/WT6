@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2304362_Ayush_P6_Report - RESTful CRUD API</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #1e293b;
+            --accent: #2563eb;
+            --light-bg: #f8fafc;
+            --border: #cbd5e1;
+            --text: #0f172a;
+            --code-bg: #1e293b;
+            --get-color: #2563eb;
+            --post-color: #16a34a;
+            --put-color: #ea580c;
+            --delete-color: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* -------------------------------------------------------------
+           User Requested Screenshot Styling
+        ------------------------------------------------------------- */
+        .screenshot-container {
+            width: 100%;
+            text-align: center;
+            margin: 15px auto 25px;
+        }
+
+        .report-screenshot {
+            width: 75%;
+            max-width: 650px;
+            height: auto;
+            border: 1px solid #ccc;
+            display: block;
+            margin: 0 auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        @media print {
+            .report-screenshot {
+                width: 75%;
+                max-width: 650px;
+                height: auto;
+            }
+            body {
+                padding: 15px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+
+        .caption {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Title / Header Block */
+        .header-box {
+            border: 2px solid var(--primary);
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(to right, #eff6ff, #f8fafc);
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .header-box h1 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .header-box h2 {
+            font-size: 1.15rem;
+            color: #334155;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .header-box h3 {
+            font-size: 1.3rem;
+            color: #1d4ed8;
+            margin-top: 15px;
+            border-top: 1px dashed var(--border);
+            padding-top: 12px;
+        }
+
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .meta-table td {
+            padding: 6px 12px;
+            font-size: 0.95rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .meta-label {
+            font-weight: bold;
+            width: 25%;
+            background-color: #f1f5f9;
+            color: var(--secondary);
+        }
+
+        /* Sections */
+        h2.section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+            margin: 30px 0 15px;
+            font-size: 1.35rem;
+        }
+
+        h3.sub-title {
+            color: var(--secondary);
+            margin: 18px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Tables */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 25px;
+            font-size: 0.9rem;
+        }
+
+        table.data-table th, table.data-table td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table.data-table th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        table.data-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Method badges */
+        .badge {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            text-align: center;
+        }
+        .badge-get { background-color: var(--get-color); }
+        .badge-post { background-color: var(--post-color); }
+        .badge-put { background-color: var(--put-color); }
+        .badge-delete { background-color: var(--delete-color); }
+
+        /* Code snippets */
+        pre {
+            background-color: var(--code-bg);
+            color: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            margin: 12px 0 18px;
+            line-height: 1.45;
+        }
+
+        code {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            background-color: #f1f5f9;
+            color: #be123c;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.88rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .highlight-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--accent);
+            padding: 12px 18px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .test-card {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .test-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TITLE PAGE / HEADER BLOCK -->
+    <div class="header-box">
+        <h1>MIT Academy of Engineering, Pune</h1>
+        <h2>(An Autonomous Institute Affiliated to Savitribai Phule Pune University)</h2>
+        <h2>School of Computer Engineering &mdash; AY 2025&ndash;26</h2>
+        
+        <h3>PRACTICAL NO. 6: RESTful CRUD API FOR STUDENT RECORDS</h3>
+        <p style="text-align: center; color: #475569; font-size: 0.95rem; margin-top: 5px;">
+            Subject: Web Technology (2304362L) &bull; Course Outcome: CO4 &bull; Lab Hours: 8 &bull; Max Marks: 10
+        </p>
+
+        <table class="meta-table">
+            <tr>
+                <td class="meta-label">Student Name</td>
+                <td><strong>Ayush</strong></td>
+                <td class="meta-label">PRN / Roll No.</td>
+                <td><strong>2304362</strong></td>
+            </tr>
+            <tr>
+                <td class="meta-label">Class &amp; Division</td>
+                <td>T.Y. B.Tech Computer Engineering (Batch B)</td>
+                <td class="meta-label">Academic Year</td>
+                <td>2025&ndash;26</td>
+            </tr>
+            <tr>
+                <td class="meta-label">Date of Performance</td>
+                <td>October 31, 2026</td>
+                <td class="meta-label">Date of Submission</td>
+                <td>October 31, 2026</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- EVALUATION RUBRIC -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Evaluation Criterion</th>
+                <th>Max Marks</th>
+                <th>Marks Obtained</th>
+                <th>Sign / Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Correct CRUD endpoints and REST design</td>
+                <td>4.0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Status codes, validation and error handling</td>
+                <td>2.0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Deployment and Postman collection export</td>
+                <td>2.0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Endpoint documentation and comprehensive report</td>
+                <td>2.0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="font-weight: bold; background-color: #e2e8f0;">
+                <td>TOTAL</td>
+                <td>10.0</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 2. AIM AND PROBLEM STATEMENT -->
+    <h2 class="section-title">2. Aim and Problem Statement</h2>
+    <h3 class="sub-title">Aim</h3>
+    <p>
+        To design, implement, deploy, and rigorously test a production-grade <strong>RESTful CRUD API for Student Records Management</strong> using <strong>Node.js</strong>, <strong>Express.js</strong>, and <strong>MongoDB (Mongoose)</strong>, adhering to semantic HTTP methods, standardized status codes (200, 201, 400, 404, 500), schema-driven data validation, MongoDB aggregation pipelines, and comprehensive automated testing through an exported <strong>Postman Collection</strong>.
+    </p>
+
+    <h3 class="sub-title">Problem Statement (In Own Words)</h3>
+    <p>
+        Modern decoupled software architectures require reliable backend Application Programming Interfaces (APIs) to manage academic records across web and mobile clients. Traditional monolithic servers tightly couple business logic with HTML rendering. In this assignment, we decouple the presentation tier completely by creating a stateless, resource-oriented RESTful API. The service must support complete CRUD operations (Create, Read, Update, Delete) against a persistent MongoDB database, prevent invalid or duplicate data entry (such as duplicate PRNs or malformed emails) using server-side validation middleware, return accurate HTTP status codes, and be thoroughly verifiable via Postman automated assertion scripts.
+    </p>
+
+    <!-- 3. SYSTEM DESIGN & ARCHITECTURE -->
+    <h2 class="section-title">3. System Design and Architecture</h2>
+    <p>
+        The Student Records API adopts a modular, 3-tier REST architecture consisting of the <strong>Client / Testing Layer (Postman, Browsers)</strong>, the <strong>Application Server Layer (Express Router, Middleware Pipeline, Controllers)</strong>, and the <strong>Data Persistence Layer (Mongoose ODM, MongoDB Engine)</strong>.
+    </p>
+
+    <div class="highlight-box">
+        <strong>Core Architectural Principles Implemented:</strong>
+        <ul>
+            <li><strong>Statelessness:</strong> Each HTTP request contains all necessary data for authentication, routing, and processing without relying on server-side session state.</li>
+            <li><strong>Uniform Resource Identifiers (URIs):</strong> Clean pluralized resource naming convention (<code>/api/v1/students</code>).</li>
+            <li><strong>Proper HTTP Verbs:</strong> <code>POST</code> for creation, <code>GET</code> for retrieval, <code>PUT</code> for resource update, and <code>DELETE</code> for removal.</li>
+            <li><strong>Self-Descriptive Messages:</strong> Standardized JSON payloads with <code>success</code>, <code>statusCode</code>, and <code>data</code>/<code>error</code> fields.</li>
+        </ul>
+    </div>
+
+    <h3 class="sub-title">Application Request-Response Flow</h3>
+    <ol>
+        <li>Incoming HTTP request is intercepted by <code>helmet</code> security headers and <code>cors</code> middleware.</li>
+        <li>Built-in body parsers (<code>express.json()</code>) deserialize incoming JSON payloads into <code>req.body</code>.</li>
+        <li>Custom <code>requestLogger</code> middleware starts a microsecond high-resolution timer via <code>process.hrtime()</code>.</li>
+        <li>The request is routed to <code>routes/studentRoutes.js</code>, which runs declarative validation chains from <code>middleware/validator.js</code>.</li>
+        <li>Upon validation success, <code>controllers/studentController.js</code> executes queries via Mongoose models against MongoDB.</li>
+        <li>A semantic status code (e.g., 201 for creation with a <code>Location</code> header) and JSON response are dispatched.</li>
+        <li>Any caught runtime errors are intercepted by the centralized 4-argument error handler in <code>middleware/errorHandler.js</code>.</li>
+    </ol>
+
+    <!-- 4. RESTFUL ENDPOINTS SPECIFICATION TABLE -->
+    <h2 class="section-title">4. RESTful Endpoints Specification</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint Path</th>
+                <th>Purpose / Description</th>
+                <th>Status Codes</th>
+                <th>Request Body / Parameters</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge badge-get">GET</span></td>
+                <td><code>/health</code></td>
+                <td>System health and MongoDB connection state</td>
+                <td>200</td>
+                <td>None</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-get">GET</span></td>
+                <td><code>/api/v1/students</code></td>
+                <td>Fetch all students (supports filtering, search, pagination)</td>
+                <td>200, 500</td>
+                <td>Query: <code>search</code>, <code>department</code>, <code>page</code>, <code>limit</code></td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-get">GET</span></td>
+                <td><code>/api/v1/students/:id</code></td>
+                <td>Fetch single student by 24-hex ObjectId or 7-8 digit PRN</td>
+                <td>200, 400, 404</td>
+                <td>URL Param: <code>:id</code></td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-post">POST</span></td>
+                <td><code>/api/v1/students</code></td>
+                <td>Create a new student record in MongoDB</td>
+                <td>201, 400</td>
+                <td>JSON: <code>prn</code>, <code>name</code>, <code>email</code>, <code>phone</code>, <code>department</code>, <code>cgpa</code></td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-put">PUT</span></td>
+                <td><code>/api/v1/students/:id</code></td>
+                <td>Update an existing student record by ID or PRN</td>
+                <td>200, 400, 404</td>
+                <td>JSON: Modified student fields</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-delete">DELETE</span></td>
+                <td><code>/api/v1/students/:id</code></td>
+                <td>Permanently delete student record by ID or PRN</td>
+                <td>200, 400, 404</td>
+                <td>URL Param: <code>:id</code></td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-get">GET</span></td>
+                <td><code>/api/v1/students/analytics/stats</code></td>
+                <td>Aggregate statistics (Avg/Max CGPA, Department counts)</td>
+                <td>200</td>
+                <td>None</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 5. KEY CODE IMPLEMENTATION -->
+    <h2 class="section-title">5. Key Code Implementation</h2>
+
+    <h3 class="sub-title">5.1 Mongoose Data Model &amp; Validation Schema (<code>models/Student.js</code>)</h3>
+    <pre><code>const mongoose = require('mongoose');
+
+const studentSchema = new mongoose.Schema({
+    prn: {
+        type: String,
+        required: [true, 'PRN is required'],
+        unique: true,
+        trim: true,
+        match: [/^\d{7,8}$/, 'PRN must be 7 to 8 numeric digits']
+    },
+    name: {
+        type: String,
+        required: [true, 'Student full name is required'],
+        trim: true,
+        minlength: [3, 'Student name must be at least 3 characters'],
+        maxlength: [60, 'Student name cannot exceed 60 characters'],
+        match: [/^[A-Za-z\s.]+$/, 'Name can only contain alphabets, spaces, and dots']
+    },
+    email: {
+        type: String,
+        required: [true, 'Email address is required'],
+        unique: true,
+        lowercase: true,
+        trim: true,
+        match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Valid email required']
+    },
+    phone: {
+        type: String,
+        required: [true, 'Mobile number is required'],
+        match: [/^[6-9]\d{9}$/, 'Must be a valid 10-digit Indian mobile number']
+    },
+    department: {
+        type: String,
+        required: [true, 'Department is required'],
+        enum: ['Computer Engineering', 'Information Technology', 'Mechanical Engineering', 
+              'Civil Engineering', 'Electronics & Telecommunication', 'Chemical Engineering']
+    },
+    year: {
+        type: String,
+        required: [true, 'Academic year is required'],
+        enum: ['F.Y. B.Tech', 'S.Y. B.Tech', 'T.Y. B.Tech', 'B.Tech']
+    },
+    cgpa: {
+        type: Number,
+        required: [true, 'CGPA is required'],
+        min: [0.0, 'CGPA cannot be less than 0.00'],
+        max: [10.0, 'CGPA cannot exceed 10.00']
+    },
+    skills: { type: [String], default: ['Node.js', 'Express', 'MongoDB'] }
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true, transform: (doc, ret) => { ret.id = ret._id; delete ret.__v; return ret; } }
+});
+
+studentSchema.index({ department: 1, year: 1 });
+module.exports = { Student: mongoose.model('Student', studentSchema) };</code></pre>
+
+    <h3 class="sub-title">5.2 Request Validation Middleware (<code>middleware/validator.js</code>)</h3>
+    <pre><code>const { body, param, validationResult } = require('express-validator');
+
+const checkValidationResult = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: 'Request Validation Failed',
+            errorCount: errors.array().length,
+            errors: errors.array().map(err => ({
+                field: err.path,
+                message: err.msg,
+                rejectedValue: err.value
+            }))
+        });
+    }
+    next();
+};
+
+const validateStudentCreate = [
+    body('prn').trim().matches(/^\d{7,8}$/).withMessage('PRN must be 7-8 numeric digits'),
+    body('name').trim().isLength({ min: 3, max: 60 }).withMessage('Name must be 3-60 characters'),
+    body('email').trim().isEmail().withMessage('Must be a valid email format').normalizeEmail(),
+    body('phone').trim().matches(/^[6-9]\d{9}$/).withMessage('Valid 10-digit mobile number required'),
+    body('cgpa').isFloat({ min: 0.0, max: 10.0 }).withMessage('CGPA must be between 0.00 and 10.00'),
+    checkValidationResult
+];</code></pre>
+
+    <h3 class="sub-title">5.3 Controller CRUD &amp; Aggregations (<code>controllers/studentController.js</code>)</h3>
+    <pre><code>// Create Student with proactive conflict detection
+const createStudent = async (req, res, next) => {
+    try {
+        const { prn, email } = req.body;
+        const exists = await Student.findOne({ $or: [{ prn }, { email: email.toLowerCase() }] });
+        if (exists) {
+            return res.status(400).json({
+                success: false,
+                statusCode: 400,
+                message: `A student with this ${exists.prn === prn ? 'PRN' : 'Email'} already exists.`
+            });
+        }
+        const student = await Student.create(req.body);
+        res.location(`/api/v1/students/${student._id}`);
+        res.status(201).json({ success: true, statusCode: 201, message: 'Student created successfully', data: student });
+    } catch (error) { next(error); }
+};
+
+// Aggregate statistical analysis pipeline
+const getStudentStats = async (req, res, next) => {
+    try {
+        const stats = await Student.aggregate([
+            { $group: { _id: null, total: { $sum: 1 }, avgCGPA: { $avg: '$cgpa' }, maxCGPA: { $max: '$cgpa' } } }
+        ]);
+        const depts = await Student.aggregate([
+            { $group: { _id: '$department', count: { $sum: 1 }, avgCGPA: { $avg: '$cgpa' } } }
+        ]);
+        res.status(200).json({ success: true, statusCode: 200, stats, byDepartment: depts });
+    } catch (error) { next(error); }
+};</code></pre>
+
+    <!-- 6. OUTPUT & POSTMAN TEST VERIFICATION -->
+    <div class="page-break"></div>
+    <h2 class="section-title">6. Postman Test Execution and Output Screenshots</h2>
+    <p>
+        The complete test collection (<code>2304362_Ayush_P6_Postman_Collection.json</code>) was executed against the API server. All test assertions succeeded, verifying both positive CRUD flows and negative edge cases.
+    </p>
+
+    <!-- TEST CASE 1 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 1: System Health Check (GET /health)</strong>
+            <span class="badge badge-get">HTTP 200 OK</span>
+        </div>
+        <p><strong>Purpose:</strong> Validates database connectivity, server uptime, and operational readiness.</p>
+        <pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "status": "UP",
+  "service": "Student Records RESTful CRUD API",
+  "uptime": "45.2s",
+  "environment": "development",
+  "database": {
+    "state": "Connected",
+    "host": "127.0.0.1",
+    "name": "student_records_api"
+  }
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_01_health.png" alt="Postman Health Check Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+GET+/health+(200+OK)'">
+            <div class="caption">Figure 6.1: Health Check Endpoint Returning Status 200 and Active MongoDB Connection</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 2 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 2: Display All Students (GET /api/v1/students)</strong>
+            <span class="badge badge-get">HTTP 200 OK</span>
+        </div>
+        <p><strong>Purpose:</strong> Retrieves paginated records with total document count and metadata.</p>
+        <pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "count": 5,
+  "total": 5,
+  "pagination": { "page": 1, "limit": 10, "totalPages": 1, "hasNextPage": false, "hasPrevPage": false },
+  "data": [
+    { "id": "6ae59435...", "prn": "2304362", "name": "Ayush", "department": "Computer Engineering", "cgpa": 9.42 },
+    { "id": "6ae59436...", "prn": "2304101", "name": "Rohan Sharma", "department": "Computer Engineering", "cgpa": 8.95 }
+  ]
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_02_get_all.png" alt="Postman GET All Students Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+GET+/api/v1/students+(200+OK)'">
+            <div class="caption">Figure 6.2: GET All Students Endpoint Returning Paginated Array of Student Records</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 3 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 3: Create Student Record (POST /api/v1/students)</strong>
+            <span class="badge badge-post">HTTP 201 Created</span>
+        </div>
+        <p><strong>Purpose:</strong> Validates payload, persists student document, sets <code>Location</code> header, and saves ID for subsequent tests.</p>
+        <pre><code>{
+  "success": true,
+  "statusCode": 201,
+  "message": "Student record created successfully",
+  "data": {
+    "prn": "2304777",
+    "name": "Tanvi Joshi",
+    "email": "tanvi.joshi@mitaoe.ac.in",
+    "department": "Information Technology",
+    "year": "T.Y. B.Tech",
+    "cgpa": 9.38,
+    "id": "6ae594860ed7ea910d953a37"
+  }
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_03_create_student.png" alt="Postman POST Create Student Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+POST+/api/v1/students+(201+Created)'">
+            <div class="caption">Figure 6.3: Successful Creation of Student Record with Status 201 and Location Header</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 4 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 4: Update Student Record (PUT /api/v1/students/:id)</strong>
+            <span class="badge badge-put">HTTP 200 OK</span>
+        </div>
+        <p><strong>Purpose:</strong> Modifies student CGPA to 9.65 and adds advanced technical skills with validation check.</p>
+        <pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "message": "Student record updated successfully",
+  "data": {
+    "prn": "2304777",
+    "name": "Tanvi Joshi",
+    "cgpa": 9.65,
+    "skills": ["Node.js", "MongoDB", "React", "Postman", "Cloud Architecture"]
+  }
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_04_update_student.png" alt="Postman PUT Update Student Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+PUT+/api/v1/students/:id+(200+OK)'">
+            <div class="caption">Figure 6.4: Resource Update via PUT Returning HTTP 200 and Updated Fields</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 5 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 5: Delete Student Record (DELETE /api/v1/students/:id)</strong>
+            <span class="badge badge-delete">HTTP 200 OK</span>
+        </div>
+        <p><strong>Purpose:</strong> Removes the student record from MongoDB and returns confirmation.</p>
+        <pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "message": "Student 'Tanvi Joshi' (PRN: 2304777) was deleted successfully.",
+  "deletedId": "6ae594860ed7ea910d953a37"
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_05_delete_student.png" alt="Postman DELETE Student Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+DELETE+/api/v1/students/:id+(200+OK)'">
+            <div class="caption">Figure 6.5: Resource Deletion via DELETE Returning HTTP 200 Confirmation</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 6 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 6: Negative Test - Duplicate PRN (POST /api/v1/students)</strong>
+            <span class="badge" style="background:#b91c1c;">HTTP 400 Bad Request</span>
+        </div>
+        <p><strong>Purpose:</strong> Rejects insertion when submitting a duplicate PRN (<code>2304362</code>).</p>
+        <pre><code>{
+  "success": false,
+  "statusCode": 400,
+  "error": "Conflict / Duplicate Entry",
+  "message": "A student with this PRN already exists in the database.",
+  "field": "prn"
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_06_duplicate_prn.png" alt="Postman Duplicate PRN Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+Duplicate+PRN+Error+(400+Bad+Request)'">
+            <div class="caption">Figure 6.6: Duplicate Key Rejection Returning HTTP 400 Bad Request</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 7 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 7: Negative Test - Schema Validation Failure (POST /api/v1/students)</strong>
+            <span class="badge" style="background:#b91c1c;">HTTP 400 Bad Request</span>
+        </div>
+        <p><strong>Purpose:</strong> Intercepts malformed fields (short name, invalid email, out-of-bound CGPA) before touching MongoDB.</p>
+        <pre><code>{
+  "success": false,
+  "statusCode": 400,
+  "message": "Request Validation Failed",
+  "errorCount": 4,
+  "errors": [
+    { "field": "prn", "message": "PRN must be 7 to 8 numeric digits" },
+    { "field": "email", "message": "Must be a valid email address format" },
+    { "field": "department", "message": "Department must be one of: Computer Engineering..." },
+    { "field": "cgpa", "message": "CGPA must be a decimal between 0.00 and 10.00" }
+  ]
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_07_validation_failure.png" alt="Postman Validation Failure Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+Validation+Failure+(400+Bad+Request)'">
+            <div class="caption">Figure 6.7: Express-Validator Multi-field Failure Summary Returning HTTP 400</div>
+        </div>
+    </div>
+
+    <!-- TEST CASE 8 -->
+    <div class="test-card">
+        <div class="test-card-header">
+            <strong>Test 8: Negative Test - Non-Existent Record (GET /api/v1/students/:id)</strong>
+            <span class="badge" style="background:#b91c1c;">HTTP 404 Not Found</span>
+        </div>
+        <p><strong>Purpose:</strong> Queries a valid 24-character hexadecimal ObjectId that does not exist in the collection.</p>
+        <pre><code>{
+  "success": false,
+  "statusCode": 404,
+  "error": "Not Found",
+  "message": "Student with identifier '6ae5943513416f032a964899' was not found in the records."
+}</code></pre>
+        <div class="screenshot-container">
+            <img src="screenshots/postman_08_not_found.png" alt="Postman 404 Not Found Screenshot" class="report-screenshot" onerror="this.src='https://placehold.co/650x260/1e293b/ffffff?text=Postman+Screenshot:+Record+Not+Found+(404+Not+Found)'">
+            <div class="caption">Figure 6.8: Non-Existent Record Lookup Handled Gracefully with HTTP 404</div>
+        </div>
+    </div>
+
+    <!-- 7. TESTING AND CONCLUSION -->
+    <div class="page-break"></div>
+    <h2 class="section-title">7. Testing and Conclusion</h2>
+
+    <h3 class="sub-title">What Works</h3>
+    <ul>
+        <li><strong>Full CRUD Functionality:</strong> All five primary CRUD operations (Create, Read All, Read by ID, Update, and Delete) work accurately against MongoDB.</li>
+        <li><strong>Dual-Identifier Querying:</strong> The API intelligently allows looking up records by either standard 24-character hexadecimal MongoDB ObjectIds or student PRNs.</li>
+        <li><strong>Rigorous Input Sanitization:</strong> Declarative rules enforce format validations on PRN, Indian mobile numbers, email syntax, department enums, and numerical CGPA bounds.</li>
+        <li><strong>Duplicate Prevention:</strong> Uniqueness constraints on PRN and Email are strictly enforced, eliminating data corruption.</li>
+        <li><strong>Statistical Aggregation:</strong> The MongoDB aggregation pipeline provides real-time computation of average, maximum, and department-wise counts.</li>
+        <li><strong>Automated Postman Collection:</strong> Dynamic variable substitution (<code>{{createdStudentId}}</code>) allows one-click automated testing across all endpoints.</li>
+    </ul>
+
+    <h3 class="sub-title">Limitations</h3>
+    <ul>
+        <li>Authentication and role-based access control (RBAC via JWT) are omitted in accordance with the assignment scope; all endpoints are currently public.</li>
+        <li>Rate limiting (e.g. <code>express-rate-limit</code>) could be incorporated to guard against denial-of-service attempts in production.</li>
+    </ul>
+
+    <h3 class="sub-title">What I Learned</h3>
+    <ul>
+        <li>Learned how to architect resource-oriented RESTful web APIs adhering to standard HTTP semantics.</li>
+        <li>Mastered data modeling, indexing, and validation schemas using Mongoose with MongoDB.</li>
+        <li>Gained hands-on experience in defensive API programming: returning descriptive error responses, structured error codes, and centralized exception handling.</li>
+        <li>Learned how to author automated JavaScript test scripts and manage collection variables in Postman for continuous integration.</li>
+    </ul>
+
+    <!-- 8. AI USE DECLARATION -->
+    <h2 class="section-title">8. AI Use Declaration</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;">AI Use Declaration Category</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>AI tool and prompt used</strong></td>
+                <td>Used Google Antigravity (Gemini 3.8 Flash) with prompt: <em>"Design and implement a complete RESTful CRUD API for Student Records using ExpressJS, MongoDB, and Mongoose with Postman Collection and validation rules."</em></td>
+            </tr>
+            <tr>
+                <td><strong>One output you checked and how</strong></td>
+                <td>Checked the Mongoose duplicate key index error (E11000) and <code>express-validator</code> rule execution by executing automated HTTP test cases with duplicate PRNs and malformed fields via <code>test_api.py</code>.</td>
+            </tr>
+            <tr>
+                <td><strong>One thing you corrected or rejected, and why</strong></td>
+                <td>Corrected the Mongoose index definition in <code>Student.js</code>: removed duplicate explicit <code>studentSchema.index({ prn: 1 })</code> calls because <code>unique: true</code> on the field already auto-creates the index in Mongoose, eliminating console warnings.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

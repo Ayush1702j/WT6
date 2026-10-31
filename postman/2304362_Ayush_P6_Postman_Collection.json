@@ -1,0 +1,455 @@
+{
+	"info": {
+		"_postman_id": "b78b5e20-3341-48e7-91a5-8c763b019362",
+		"name": "2304362_Ayush_P6_StudentAPI_Collection",
+		"description": "Comprehensive Postman Test Collection for Practical No. 6: RESTful CRUD API for Student Records.\n\n- Institution: MIT Academy of Engineering, Pune\n- Course: Web Technology (2304362L) | T.Y. B.Tech (Batch B)\n- Student: Ayush | PRN: 2304362\n- Covers: Full CRUD, Valid/Invalid status codes (200, 201, 400, 404, 500), Pre-request & Test assertions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5050",
+			"type": "string"
+		},
+		{
+			"key": "createdStudentId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "01. System Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": ["{{baseUrl}}"],
+					"path": ["health"]
+				},
+				"description": "Checks whether the Express server and MongoDB database connection are UP."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Database connection is connected\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.database.state).to.eql(\"Connected\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "02. GET - Display All Students",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students?page=1&limit=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students"],
+					"query": [
+						{ "key": "page", "value": "1" },
+						{ "key": "limit", "value": "10" }
+					]
+				},
+				"description": "Returns a paginated list of all enrolled students from the MongoDB collection."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response has success true and student array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.data).to.be.an('array');",
+							"    pm.expect(jsonData.total).to.be.above(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "03. POST - Create New Student Record (Valid)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"prn\": \"2304777\",\n  \"name\": \"Tanvi Joshi\",\n  \"email\": \"tanvi.joshi@mitaoe.ac.in\",\n  \"phone\": \"9866554433\",\n  \"department\": \"Information Technology\",\n  \"year\": \"T.Y. B.Tech\",\n  \"division\": \"A\",\n  \"cgpa\": 9.38,\n  \"skills\": [\"Node.js\", \"MongoDB\", \"React\", \"Postman\"],\n  \"status\": \"Active\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students"]
+				},
+				"description": "Inserts a new student record into MongoDB. Validates input and enforces uniqueness."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 Created\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Has Location header and valid student ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.data.prn).to.eql(\"2304777\");",
+							"    pm.expect(pm.response.headers.has(\"Location\")).to.eql(true);",
+							"    ",
+							"    // Save generated ID to collection variable for subsequent tests",
+							"    pm.collectionVariables.set(\"createdStudentId\", jsonData.data.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "04. GET - Display Student by PRN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/2304362",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "2304362"]
+				},
+				"description": "Demonstrates identifier flexibility: looks up student record using their unique 7-digit PRN."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Student is Ayush (PRN: 2304362)\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.data.prn).to.eql(\"2304362\");",
+							"    pm.expect(jsonData.data.name).to.eql(\"Ayush\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "05. GET - Display Student by MongoDB ObjectId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/{{createdStudentId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "{{createdStudentId}}"]
+				},
+				"description": "Retrieves the newly created student record using the 24-character hexadecimal MongoDB ObjectId."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Retrieved student matches created record\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.data.name).to.eql(\"Tanvi Joshi\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "06. PUT - Update Student Record",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cgpa\": 9.65,\n  \"skills\": [\"Node.js\", \"MongoDB\", \"React\", \"Postman\", \"Cloud Architecture\", \"Kubernetes\"],\n  \"division\": \"B\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/{{createdStudentId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "{{createdStudentId}}"]
+				},
+				"description": "Updates fields on the student document, verifying schema constraints and returning updated document."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"CGPA and skills updated successfully\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.data.cgpa).to.eql(9.65);",
+							"    pm.expect(jsonData.data.division).to.eql(\"B\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "07. GET - Aggregate Analytics & Stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/analytics/stats",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "analytics", "stats"]
+				},
+				"description": "Executes MongoDB aggregation pipeline for department counts, average CGPA, and year distribution."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Analytics object contains required aggregates\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.analytics).to.have.property(\"totalStudents\");",
+							"    pm.expect(jsonData.analytics).to.have.property(\"averageCGPA\");",
+							"    pm.expect(jsonData.analytics).to.have.property(\"byDepartment\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "08. DELETE - Remove Student Record",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/{{createdStudentId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "{{createdStudentId}}"]
+				},
+				"description": "Deletes the student record from MongoDB and returns confirmation."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Confirmation message received\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"    pm.expect(jsonData.message).to.include(\"deleted successfully\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "09. Negative Test - Duplicate PRN (400 Bad Request)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"prn\": \"2304362\",\n  \"name\": \"Ayush Clone\",\n  \"email\": \"ayush.clone@mitaoe.ac.in\",\n  \"phone\": \"9876543219\",\n  \"department\": \"Computer Engineering\",\n  \"year\": \"T.Y. B.Tech\",\n  \"cgpa\": 8.5\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students"]
+				},
+				"description": "Attempts to insert a student with an already registered PRN (2304362). Expects HTTP 400 Bad Request."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Error message indicates PRN conflict\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"    pm.expect(jsonData.message).to.include(\"PRN already exists\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "10. Negative Test - Schema Validation Failure (400 Bad Request)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"prn\": \"99\",\n  \"name\": \"A\",\n  \"email\": \"not-a-valid-email\",\n  \"phone\": \"123\",\n  \"department\": \"Aviation Engineering\",\n  \"year\": \"Prep School\",\n  \"cgpa\": 15.0\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students"]
+				},
+				"description": "Submits multiple malformed fields. express-validator rejects request before hitting database."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Returns array of field-level validation errors\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"    pm.expect(jsonData.errors).to.be.an('array');",
+							"    pm.expect(jsonData.errorCount).to.be.above(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "11. Negative Test - Record Not Found (404 Not Found)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/6ae5943513416f032a964899",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "6ae5943513416f032a964899"]
+				},
+				"description": "Queries a valid 24-character hexadecimal MongoDB ObjectId that does not exist. Expects HTTP 404."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Error message indicates student not found\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"    pm.expect(jsonData.error).to.eql(\"Not Found\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "12. Negative Test - Malformed Identifier (400 Bad Request)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/students/invalid_identifier_xyz",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "v1", "students", "invalid_identifier_xyz"]
+				},
+				"description": "Passes an invalid identifier string. Validated by param middleware before querying database."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Validation error reports invalid identifier format\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		}
+	]
+}
